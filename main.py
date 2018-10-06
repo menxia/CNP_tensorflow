@@ -4,7 +4,7 @@ from utils import *
 
 TRAINING_ITERATIONS = int(2e5)
 MAX_CONTEXT_POINTS = 10
-PLOT_AFTER = int(2e4)
+PLOT_AFTER = int(2e0)
 
 tf.reset_default_graph()
 
@@ -34,7 +34,7 @@ init = tf.initialize_all_variables()
 with tf.Session() as sess:
     sess.run(init)
 
-    for it in rnage(TRAINING_ITERATIONS):
+    for it in range(TRAINING_ITERATIONS):
         sess.run([train_step])
 
         if it%PLOT_AFTER == 0:

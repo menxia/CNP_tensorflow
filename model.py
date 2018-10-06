@@ -1,5 +1,5 @@
-import tensorflow as tf 
-import numpy as np 
+import tensorflow as tf
+import numpy as np
 
 
 class DeterministicEncoder(object):
@@ -14,8 +14,8 @@ class DeterministicEncoder(object):
 
         # Pass through MLP
         with tf.variable_scope('encoder', reuse=tf.AUTO_REUSE):
-            for i, szie in enumerate(self.output_size[:-1]):
-                hidden = tf.nn.relu(tf.layers.dense(hidden, seize, name="Encoder_layer_{}".format(i)))
+            for i, size in enumerate(self.output_size[:-1]):
+                hidden = tf.nn.relu(tf.layers.dense(hidden, size, name="Encoder_layer_{}".format(i)))
             # Last layer without a relu
             hidden = tf.layers.dense(hidden, self.output_size[-1], name="Encoder_layer_{}".format(i+1))
 
@@ -38,8 +38,8 @@ class DeterministicDecoder(object):
 
         with tf.variable_scope('decoder', reuse=tf.AUTO_REUSE):
             for i, size in enumerate(self.output_size[:-1]):
-                hidden = tf.nn.relu(tf.layers.dense(hidde, size, name="Decoder_layer_{}".format(i)))
-            hidden = tf.layers.dense(hidde, self.output_size[-1], name="Decoder_layer_{}".format(i+1))
+                hidden = tf.nn.relu(tf.layers.dense(hidden, size, name="Decoder_layer_{}".format(i)))
+            hidden = tf.layers.dense(hidden, self.output_size[-1], name="Decoder_layer_{}".format(i+1))
 
         hidden = tf.reshape(hidden, (batch_size, num_total_points, -1))
 
@@ -49,7 +49,7 @@ class DeterministicDecoder(object):
 
         dist = tf.contrib.distributions.MultivariateNormalDiag(loc=mu, scale_diag=sigma)
 
-        return dist, mu, sigma 
+        return dist, mu, sigma
 
 class DeterministicModel(object):
     def __init__(self, encoder_output_sizes, decoder_output_sizes):
@@ -64,5 +64,5 @@ class DeterministicModel(object):
         if target_y is not None:
             log_p = dist.log_prob(target_y)
         else:
-            log_p = None 
-        return log_p, mu, sigma 
+            log_p = None
+        return log_p, mu, sigma
